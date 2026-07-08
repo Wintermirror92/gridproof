@@ -234,7 +234,23 @@ def make_evidence_package_text(row, role_view):
     return "\n".join(lines)
 
 
-def make_report(site_row, site_logs):
+def make_report(site_row, site_logs, role_view=None, selected_role="공통 담당자"):
+    if role_view is None:
+        role_view = {
+            "title": "공통 담당자 검토 카드",
+            "focus": "사업지별 위험 단서와 권고 조치를 공통 관점에서 확인합니다.",
+            "evidence": split_actions(site_row["main_reasons"]),
+            "actions": split_actions(site_row["recommended_actions"]),
+            "next_step": "담당자 검토 후 종결 또는 재점검 여부를 결정합니다.",
+            "notice": (
+                "AI는 고의성·부정수급·법적 책임을 확정하지 않습니다. "
+                "이 리포트는 담당자 검토를 위한 단서와 다음 조치만 제시합니다."
+            ),
+        }
+
+    role_evidence = "\n".join([f"- {item}" for item in role_view["evidence"]])
+    role_actions = "\n".join([f"- {item}" for item in role_view["actions"]])
+
     report = f"""
 # GridProof ESS 담당자 검토용 감사 리포트 초안
 
@@ -245,26 +261,46 @@ def make_report(site_row, site_logs):
 - 설치확인용량: {site_row['installed_kw']:,} kW
 - 데이터 구분: 합성 운영 로그 기반 MVP 검증
 
-## 2. 요약 판단
+## 2. 리포트 관점
+- 선택 역할: {selected_role}
+- 검토 카드: {role_view['title']}
+- 검토 초점: {role_view['focus']}
+
+## 3. 요약 판단
 - 위험점수: {site_row['risk_score']} / 100
 - 위험등급: {site_row['risk_level']}
 - 평균 지령 이행률: {site_row['mean_fulfillment_rate']*100:.1f}%
 - 주요 단서: {clean_label(site_row['main_reasons'])}
 
-## 3. 정량 단서
+## 4. 정량 단서
 - 설치/계약 용량 차이율: {site_row['capacity_gap_rate']*100:.1f}%
 - 통신 로그 결측률: {site_row['comm_missing_rate']*100:.1f}%
 - SoC 부족 발생률: {site_row['soc_low_rate']*100:.1f}%
 - PCS·BMS 알람 발생률: {site_row['alarm_rate']*100:.1f}%
 - 품질플래그 확인률: {site_row['quality_flag_rate']*100:.1f}%
 
-## 4. 권고 조치
-{chr(10).join([f"- {a}" for a in split_actions(site_row['recommended_actions'])])}
+## 5. 역할별 주요 단서
+{role_evidence}
 
-## 5. 주의 문구
+## 6. 역할별 권고 조치
+{role_actions}
+
+## 7. 소명·검토 워크플로우
+- 1단계: 확인 필요 — 위험점수와 주요 단서 확인
+- 2단계: 사업자 소명 요청 — 필요 로그와 증빙자료 요청
+- 3단계: 로그 재제출 — BMS·PCS·계량·통신 로그 제출
+- 4단계: 담당자 검토 — 제출자료와 기존 로그 대조
+- 5단계: 종결 / 재점검 — 소명 인정 또는 재점검 대상 분류
+
+## 8. 다음 단계
+- {role_view['next_step']}
+
+## 9. 주의 문구
 본 리포트는 공개데이터 기반 환경 분석과 합성 로그 기반 End-to-End 이행검증 프로세스 구현 결과입니다.
 실제 KPX 지령 로그, 실제 ESS BMS·PCS 로그, 실제 사업자 운영자료를 사용한 최종 검증 결과가 아닙니다.
 AI는 고의성·부정수급 여부를 확정하지 않으며, 담당자 검토를 위한 점검 우선순위와 근거 단서만 제공합니다.
+
+{role_view['notice']}
 """
     return report.strip()
 
@@ -501,14 +537,26 @@ elif page == "5. Report Generator":
     row = ordered[ordered["site_name"] == selected_report].iloc[0]
     site_logs = logs[logs["site_name"] == selected_report]
 
-    report = make_report(row, site_logs)
+    role_view = get_role_view(selected_report_role, row)
+    report = make_report(
+        row,
+        site_logs,
+        role_view=role_view,
+        selected_role=selected_report_role
+    )
 
     st.info(f"리포트 관점: {selected_report_role}")
+
+    c1, c2, c3, c4 = st.columns(4)
+    for col, metric in zip([c1, c2, c3, c4], role_view["metrics"]):
+        label, value = metric
+        col.metric(label, value)
+
     st.markdown(report)
 
     st.download_button(
         "리포트 Markdown 다운로드",
         report,
-        file_name=f"GridProof_Report_{row['site_id']}.md",
+        file_name=f"GridProof_Report_{row['site_id']}_{selected_report_role[:8]}.md",
         mime="text/markdown"
     )
