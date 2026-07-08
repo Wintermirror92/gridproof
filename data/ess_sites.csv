@@ -1,0 +1,8 @@
+﻿site_id,site_name,municipality,contract_kw,contract_kwh,installed_kw,installed_kwh,gps_match,doc_missing,operator,lat,lon,profile
+HN-ESS-02,해남 ESS-02,해남군,5000,15000,4700,14100,0,1,VPP-A,34.573,126.599,capacity_mismatch_underperform
+WD-ESS-05,완도 ESS-05,완도군,3000,9000,3000,9000,1,0,VPP-B,34.311,126.755,communication_missing
+MA-ESS-01,무안 ESS-01,무안군,4200,12600,4150,12450,1,0,VPP-C,34.99,126.481,repeated_low_fulfillment
+SA-ESS-03,신안 ESS-03,신안군,4500,13500,4500,13500,1,0,VPP-A,34.833,126.351,weather_context
+YA-ESS-04,영암 ESS-04,영암군,3500,10500,3500,10500,1,0,VPP-B,34.8,126.696,minor_delay
+NJ-ESS-06,나주 ESS-06,나주시,3800,11400,3800,11400,1,0,VPP-D,35.016,126.71,normal
+SC-ESS-07,순천 ESS-07,순천시,3200,9600,3200,9600,1,0,VPP-C,34.95,127.487,normal

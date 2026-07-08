@@ -1,0 +1,8 @@
+﻿site_id,site_name,municipality,contract_kw,installed_kw,capacity_gap_rate,mean_fulfillment_rate,low_fulfillment_rate,comm_missing_rate,soc_low_rate,alarm_rate,quality_flag_rate,weather_context_rate,risk_score,risk_level,main_reasons,recommended_actions,data_type
+HN-ESS-02,해남 ESS-02,해남군,5000,4700,0.06,0.667,0.955,0.0,0.405,0.216,0.162,0.297,61.2,높음,증빙/설치 불일치 · 이행률 저조(66.7%) · SoC 부족 빈발 · PCS/BMS 알람 · 품질플래그 확인 · 기상특보 영향권,담당자 확인 및 원시 로그 요청 / 설치용량·GPS·준공증빙 재확인 / 지령-출력 원시 로그 대조 / SoC 운전정책 및 BMS 로그 요청 / PCS/BMS 알람 상세 이력 요청 / 기상특보 시간대 제외/보정 검토,SYNTHETIC_SUMMARY
+MA-ESS-01,무안 ESS-01,무안군,4200,4150,0.012,0.73,0.833,0.0,0.241,0.157,0.0,0.0,32.4,중간,이행률 저조(73.0%) · SoC 부족 빈발 · PCS/BMS 알람,지령-출력 원시 로그 대조 / SoC 운전정책 및 BMS 로그 요청 / PCS/BMS 알람 상세 이력 요청,SYNTHETIC_SUMMARY
+WD-ESS-05,완도 ESS-05,완도군,3000,3000,0.0,0.744,0.362,0.2,0.105,0.0,0.2,0.276,29.0,중간,이행률 저조(74.4%) · 통신 로그 결측 · SoC 부족 빈발 · 품질플래그 확인 · 기상특보 영향권,지령-출력 원시 로그 대조 / 통신장애/재전송 로그 요청 / SoC 운전정책 및 BMS 로그 요청 / 기상특보 시간대 제외/보정 검토,SYNTHETIC_SUMMARY
+SA-ESS-03,신안 ESS-03,신안군,4500,4500,0.0,0.905,0.221,0.0,0.029,0.0,0.0,0.288,7.2,낮음,기상특보 영향권,기상특보 시간대 제외/보정 검토,SYNTHETIC_SUMMARY
+YA-ESS-04,영암 ESS-04,영암군,3500,3500,0.0,0.923,0.16,0.0,0.066,0.0,0.0,0.0,4.7,낮음,중대 이상 없음,정기 모니터링 유지,SYNTHETIC_SUMMARY
+SC-ESS-07,순천 ESS-07,순천시,3200,3200,0.0,0.97,0.065,0.0,0.009,0.0,0.0,0.0,0.5,낮음,중대 이상 없음,정기 모니터링 유지,SYNTHETIC_SUMMARY
+NJ-ESS-06,나주 ESS-06,나주시,3800,3800,0.0,0.96,0.029,0.0,0.02,0.0,0.0,0.0,0.4,낮음,중대 이상 없음,정기 모니터링 유지,SYNTHETIC_SUMMARY
